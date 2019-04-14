@@ -46,7 +46,7 @@ function parseDataFromIso8601(value) {
  * Please find algorithm here: https://en.wikipedia.org/wiki/Leap_year#Algorithm
  *
  * @param {date} date
- * @return {bool}
+ * @return {boolean}
  *
  * @example :
  *    Date(1900,1,1)    => false
@@ -57,13 +57,9 @@ function parseDataFromIso8601(value) {
  */
 function isLeapYear(date) {
     let year = date.getFullYear();
-    if (year % 4 == 0) {
-        if (year % 100 == 0) {
-            if (year % 400 == 0) {
-                return true;
-            } else {
-                return false;
-            }
+    if (year % 4 === 0) {
+        if (year % 100 === 0) {
+            return year % 400 === 0;
         } else {
             return true;
         }
@@ -104,7 +100,7 @@ function timeSpanToString(startDate, endDate) {
 /**
  * Returns the angle (in radians) between the hands of an analog clock for the specified Greenwich time.
  * If you have problem with solution please read: https://en.wikipedia.org/wiki/Clock_angle_problem
- * 
+ *
  * @param {date} date
  * @return {number}
  *
@@ -117,7 +113,7 @@ function timeSpanToString(startDate, endDate) {
 function angleBetweenClockHands(date) {
     let h = date.getUTCHours();
     let m = date.getUTCMinutes();
-    let angle = 0;
+    let angle;
     if (h > 12) h -= 12;
     angle = Math.abs(0.5 * (60 * h - 11 * m));
     if (angle > 180) angle = 360 - angle;
