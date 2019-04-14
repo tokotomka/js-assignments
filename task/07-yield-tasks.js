@@ -33,7 +33,15 @@
  *
  */
 function* get99BottlesOfBeer() {
-    throw new Error('Not implemented');
+    yield '99 bottles of beer on the wall, 99 bottles of beer.';
+    for (let i = 98; i > 0; i--) {
+        let countBottles = i !== 1 ? `${i} bottles` : `${i} bottle`;
+        yield `Take one down and pass it around, ${countBottles} of beer on the wall.`;
+        yield `${countBottles} of beer on the wall, ${countBottles} of beer.`
+    }
+    yield    'Take one down and pass it around, no more bottles of beer on the wall.';
+    yield    'No more bottles of beer on the wall, no more bottles of beer.';
+    yield    'Go to the store and buy some more, 99 bottles of beer on the wall.';
 }
 
 
@@ -47,7 +55,14 @@ function* get99BottlesOfBeer() {
  *
  */
 function* getFibonacciSequence() {
-    throw new Error('Not implemented');
+    let x1 = 0, x2 = 1, dif = 0;
+    yield x1;
+    while (x1 < 39088169) {
+        yield x2;
+        dif = x2;
+        x2 = x1 + x2;
+        x1 = dif
+    }
 }
 
 
@@ -82,7 +97,14 @@ function* getFibonacciSequence() {
  *
  */
 function* depthTraversalTree(root) {
-    throw new Error('Not implemented');
+    let arr = [root];
+    while (arr.length > 0) {
+        let a = arr.pop();
+        yield a;
+        if (a.children) {
+            arr.push(...a.children.reverse())
+        }
+    }
 }
 
 
@@ -108,7 +130,14 @@ function* depthTraversalTree(root) {
  *
  */
 function* breadthTraversalTree(root) {
-    throw new Error('Not implemented');
+    let arr = [root];
+    while (arr.length > 0) {
+        let a = arr.pop();
+        yield a;
+        if (a.children) {
+            arr.unshift(...a.children.reverse())
+        }
+    }
 }
 
 
@@ -126,7 +155,18 @@ function* breadthTraversalTree(root) {
  *   [ 1, 3, 5, ... ], [ -1 ] => [ -1, 1, 3, 5, ...]
  */
 function* mergeSortedSequences(source1, source2) {
-    throw new Error('Not implemented');
+    let one = source1(), two = source2();
+    let result1 = one.next(), result2 = two.next();
+    while (true) {
+        if (result1.done && result2.done) break;
+        if (result1.value < result2.value || result2.done) {
+            yield result1.value;
+            result1 = one.next();
+        } else {
+            yield result2.value;
+            result2 = two.next();
+        }
+    }
 }
 
 
