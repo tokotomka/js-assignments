@@ -17,8 +17,42 @@
  *  ]
  */
 function createCompassPoints() {
-    throw new Error('Not implemented');
-    var sides = ['N','E','S','W'];  // use array of cardinal directions only!
+    var sides = ['N', 'E', 'S', 'W'];  // use array of cardinal directions only!
+    let mainWinds = [], halfWinds = [], quarterWinds = [],
+        updateWinds = (array, newArr) => {
+            array.map((e, i, arr) => {
+                newArr.push(e);
+                let el = (i === arr.length - 1) ? arr[0] : arr[i + 1];
+                let wind = (i % 2) ? el + e : e + el;
+                newArr.push(wind);
+            });
+        };
+    updateWinds(sides, mainWinds);
+    updateWinds(mainWinds, halfWinds);
+    halfWinds.map((e, i, arr) => {
+        let el;
+        quarterWinds.push(e);
+        switch (i % 4) {
+            case 0:
+                el = arr[i + 4] || arr[0];
+                quarterWinds.push(e + 'b' + el);
+                break;
+            case 1:
+                quarterWinds.push(arr[i + 1] + 'b' + arr[i - 1]);
+                break;
+            case 2:
+                el = arr[i + 2] || arr[0];
+                quarterWinds.push(e + 'b' + el);
+                break;
+            default:
+                el = arr[i + 1] || arr[0];
+                quarterWinds.push(el + 'b' + arr[i - 3]);
+        }
+
+    });
+    return quarterWinds.map((e, i) => {
+        return {abbreviation: e, azimuth: (360 / quarterWinds.length) * i}
+    });
 }
 
 
@@ -141,9 +175,9 @@ function extractRanges(nums) {
 }
 
 module.exports = {
-    createCompassPoints : createCompassPoints,
-    expandBraces : expandBraces,
-    getZigZagMatrix : getZigZagMatrix,
-    canDominoesMakeRow : canDominoesMakeRow,
-    extractRanges : extractRanges
+    createCompassPoints: createCompassPoints,
+    expandBraces: expandBraces,
+    getZigZagMatrix: getZigZagMatrix,
+    canDominoesMakeRow: canDominoesMakeRow,
+    extractRanges: extractRanges
 };
